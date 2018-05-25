@@ -66,9 +66,11 @@ export default {
       }
 
       // 先根据配置中的方块个数从方块数组中随机取出几条
+      //  这里 randomCellGroup 的长度有可能小于this.config.cellGroupCount（在cellGroup.length < this.config.cellGroupCount时会小于）
       let randomCellGroup = Utils.arrayRandom(cellGroup, this.config.cellGroupCount)
 
       // 再根据配置中的行和列随机填充一个地图数据
+      // 这里 cellData 的长度可能大于 this.config.row * this.config.col （在fillCount - perGroup * groupLength > 0时，若 rest / groupCount 为整则不多，否则多 groupCount - 1 个）
       let cellData = Utils.arrayFillByRandomGroup(this.config.row * this.config.col, randomCellGroup)
 
       // 将数据根据行的大小转为二维数组，然后外部包裹一层空白节点
@@ -89,6 +91,7 @@ export default {
       if (ev.target.nodeName !== 'TD') return
 
       // 获取点击方块，如果方块是空的那么退出
+      // 这里是获取 td 标签元素 的 cellIndex 和 rowIndex属性
       let col = ev.target.cellIndex
       let row = ev.target.parentNode.rowIndex
       let currentCell = this.cellData[row][col]
@@ -157,7 +160,7 @@ export default {
 
       // 根据设置中的延迟来隐藏连接线
       setTimeout(() => {
-        this.hideLine(line)
+        // this.hideLine(line)
       }, this.config.lineDelay)
     },
     // 清空线上的所有连接线

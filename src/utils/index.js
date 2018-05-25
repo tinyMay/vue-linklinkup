@@ -14,6 +14,7 @@ if (!Array.prototype.fill) {
       var O = Object(this);
 
       // Steps 3-5.
+      //  这里 >>> 是无符号位移运算符 ， >>> 0 是为了把一些 如 undefined , null 变成 0
       var len = O.length >>> 0;
 
       // Steps 6-7.
@@ -103,6 +104,7 @@ Utils.arrayShuffle = function (arr) {
 // 用一个数组来随机填充一个指定大小的数组，groupCount用于将数据分组，每组数据必须是groupCount的倍数
 Utils.arrayFillByRandomGroup = function (fillCount, group, groupCount = 2) {
   let groupLength = group.length
+  //  ~~ 这里相当于取整， ~~(-2.99) => -2 , ~~3.5 => 3
   let perGroup = ~~(~~(fillCount / groupLength) / groupCount) * groupCount
   let rest = fillCount - perGroup * groupLength
   let countArray = group.map((e, i) => rest / groupCount > i ? perGroup + groupCount : perGroup)
